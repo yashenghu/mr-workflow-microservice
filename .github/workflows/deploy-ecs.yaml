@@ -1,0 +1,124 @@
+---
+name: Deploy Template Microservice ECS
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        required: true
+        options:
+          - mrtest
+          - mrprod
+          - qhtest
+          - qhvalidation
+          - qhpreprod
+          - qhprod
+      tag:
+        type: string
+        default: latest
+  push:
+    branches:
+      - master
+      - dev
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  deploy_mrprod:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'mrprod' }}
+    name: Deploy Template Microservice MRProd
+    uses: mjgaletto/mr-template-microservice/.github/workflows/build-ecs.yaml@master
+    secrets:
+      ASSUME_ROLE: ${{ secrets.MRPROD_ASSUME_ROLE_ARN }}
+      DEVOPS_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      S3_REPO_USERNAME: ${{ secrets.S3_REPO_USERNAME }}
+      S3_REPO_PASSWORD: ${{ secrets.S3_REPO_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      environment: mrprod
+      tag: ${{ github.event.inputs.tag }}
+      level: production
+      cluster: production-ecs-ECSCluster
+
+  deploy_qhtest:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'qhtest' }}
+    name: Deploy Template Microservice QHTest
+    uses: mjgaletto/mr-template-microservice/.github/workflows/build-ecs.yaml@master
+    secrets:
+      ASSUME_ROLE: ${{ secrets.QHTEST_ASSUME_ROLE_ARN }}
+      DEVOPS_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      S3_REPO_USERNAME: ${{ secrets.S3_REPO_USERNAME }}
+      S3_REPO_PASSWORD: ${{ secrets.S3_REPO_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      environment: qhtest
+      tag: ${{ github.event.inputs.tag }}
+      level: production
+      cluster: qhtest-ecs-ECSCluster
+
+  deploy_qhvalidation:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'qhvalidation' }}
+    name: Deploy Template Microservice QHValidation
+    uses: mjgaletto/mr-template-microservice/.github/workflows/build-ecs.yaml@master
+    secrets:
+      ASSUME_ROLE: ${{ secrets.QHVALIDATION_ASSUME_ROLE_ARN }}
+      DEVOPS_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      S3_REPO_USERNAME: ${{ secrets.S3_REPO_USERNAME }}
+      S3_REPO_PASSWORD: ${{ secrets.S3_REPO_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      environment: qhvalidation
+      tag: ${{ github.event.inputs.tag }}
+      level: develop
+      cluster: qhvalidation-ecs-ECSCluster
+
+  deploy_qhvalidation_push:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    name: (Push) Deploy Template Microservice QHValidation
+    uses: mjgaletto/mr-template-microservice/.github/workflows/build-ecs.yaml@master
+    secrets:
+      ASSUME_ROLE: ${{ secrets.QHVALIDATION_ASSUME_ROLE_ARN }}
+      DEVOPS_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      S3_REPO_USERNAME: ${{ secrets.S3_REPO_USERNAME }}
+      S3_REPO_PASSWORD: ${{ secrets.S3_REPO_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      environment: qhvalidation
+      tag: latest
+      level: develop
+      cluster: qhvalidation-ecs-ECSCluster
+
+  deploy_qhpreprod:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'qhpreprod' }}
+    name: Deploy Template Microservice QHPreprod
+    uses: mjgaletto/mr-template-microservice/.github/workflows/build-ecs.yaml@master
+    secrets:
+      ASSUME_ROLE: ${{ secrets.QHPREPROD_ASSUME_ROLE_ARN }}
+      DEVOPS_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      S3_REPO_USERNAME: ${{ secrets.S3_REPO_USERNAME }}
+      S3_REPO_PASSWORD: ${{ secrets.S3_REPO_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      environment: qhpreprod
+      tag: ${{ github.event.inputs.tag }}
+      level: production
+      cluster: qhpreprod-ecs-ECSCluster
+
+  deploy_qhprod:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'qhprod' }}
+    name: Deploy Template Microservice QHProd
+    uses: mjgaletto/mr-template-microservice/.github/workflows/build-ecs.yaml@master
+    secrets:
+      ASSUME_ROLE: ${{ secrets.QHPROD_ASSUME_ROLE_ARN }}
+      DEVOPS_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      S3_REPO_USERNAME: ${{ secrets.S3_REPO_USERNAME }}
+      S3_REPO_PASSWORD: ${{ secrets.S3_REPO_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      environment: qhprod
+      tag: ${{ github.event.inputs.tag }}
+      level: production
+      cluster: qhprod-ecs-shared-ECSCluster

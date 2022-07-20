@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>api</module>
+        <module>client</module>
+        <module>model</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.12.RELEASE</version>
+    </parent>
+
+    <groupId>com.medirecords</groupId>
+    <artifactId>mr-template-microservice</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <mr-spring-boot-starter.version>1.1.13</mr-spring-boot-starter.version>
+        <mr-data-access-lib.version>1.0.2-SNAPSHOT</mr-data-access-lib.version>
+        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.12.0</version>
+                <configuration>
+                    <commitMessages>
+                        <releaseFinishMergeMessage>[RELEASE] @{version}</releaseFinishMergeMessage>
+                        <hotfixFinishMessage>Update for next development version [skip ci]</hotfixFinishMessage>
+                        <releaseFinishMessage>Update for next development version [skip ci]</releaseFinishMessage>
+                        <releaseVersionUpdateMessage>Update for next development version [skip ci]</releaseVersionUpdateMessage>
+                    </commitMessages>
+                </configuration>
+            </plugin>
+        </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>mr-s3-repo-releases</id>
+            <url>s3://repo-mvn-medirecords/releases</url>
+        </repository>
+        <repository>
+            <id>mr-s3-repo-snapshots</id>
+            <url>s3://repo-mvn-medirecords/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>mr-s3-repo-releases</id>
+            <url>s3://repo-mvn-medirecords/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>mr-s3-repo-snapshots</id>
+            <url>s3://repo-mvn-medirecords/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

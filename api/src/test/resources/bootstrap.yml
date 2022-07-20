@@ -1,0 +1,9 @@
+application:
+  name: 'epc-template'
+spring:
+  application:
+    name: '${application.name}'
+  cloud:
+    config:
+      uri: 'http://none'
+      fail-fast: false

@@ -1,0 +1,9 @@
+application:
+  name: 'mr-template-microservice'
+spring:
+  application:
+    name: '${application.name}'
+  cloud:
+    config:
+      fail-fast: false # Need to set to true later
+      uri: http://${CONFIG_SERVER_HOST}:${CONFIG_SERVER_PORT}/

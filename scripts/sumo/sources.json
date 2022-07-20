@@ -1,0 +1,19 @@
+{
+    "api.version": "v1",
+    "sources": [
+      {
+        "name": "mr-template-microservice",
+        "category": "app-changeme",
+        "hostName": "hostName-changeme",
+        "automaticDateParsing": true,
+        "multilineProcessingEnabled": true,
+        "useAutolineMatching": false,
+        "forceTimeZone": true,
+        "timeZone": "Etc/UTC",
+        "cutoffRelativeTime": "-1h",
+        "encoding": "UTF-8",
+        "pathExpression": "/app/logs/mr-template-microservice.log",
+        "sourceType": "LocalFile"
+      }
+    ]
+  }

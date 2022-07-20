@@ -1,0 +1,9 @@
+version: '3.4'
+services:
+  local-mr-template-microservice:
+    image: mr-template-microservice
+    container_name: mr-template-microservice
+    ports:
+      - "8080:8080"
+    environment:
+      LOCAL_DOCKER_ENV: 'true'
